@@ -3,6 +3,7 @@ import weasyprint
 from root.utils import render_to_pdf
 from django.http import Http404, HttpResponse
 from datetime import datetime
+from .models import Invoice
 
 
 def download_to_pdf(request):
@@ -16,3 +17,8 @@ def download_to_pdf(request):
         content = "attachment; filename='%s'" %(filename)
         response['Content-Disposition'] = content
         return response
+
+def preview_template(request, id):
+    obj = Invoice.objects.get(invoice_id=id)
+    context = {"obj":obj}
+    return render(request, "dummy_download.html", context)
